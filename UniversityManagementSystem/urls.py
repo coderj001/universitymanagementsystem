@@ -4,8 +4,8 @@ from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
-from student_management_app import views, HodViews, StaffViews, StudentViews
-from student_management_app.EditResultVIewClass import EditResultViewClass
+from managementApp import views, HodViews, StaffViews, StudentViews
+from managementApp.EditResultVIewClass import EditResultViewClass
 from UniversityManagementSystem import settings
 
 urlpatterns = [
