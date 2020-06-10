@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from student_management_app.EmailBackEnd import EmailBackEnd
-from student_management_system import settings
+from UniversityManagementSystem import settings
 
 
 def showDemoPage(req):
