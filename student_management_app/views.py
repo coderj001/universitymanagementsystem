@@ -11,19 +11,19 @@ from student_management_app.EmailBackEnd import EmailBackEnd
 from student_management_system import settings
 
 
-def showDemoPage(request):
-    return render(request,"demo.html")
+def showDemoPage(req):
+    return render(req,"demo.html")
 
-def ShowLoginPage(request):
-    return render(request,"login_page.html")
+def ShowLoginPage(req):
+    return render(req,"login_page.html")
 
-def doLogin(request):
-    if request.method!="POST":
+def doLogin(req):
+    if req.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
     else:
-        user=EmailBackEnd.authenticate(request,username=request.POST.get("email"),password=request.POST.get("password"))
+        user=EmailBackEnd.authenticate(req,username=req.POST.get("email"),password=req.POST.get("password"))
         if user!=None:
-            login(request,user)
+            login(req,user)
             if user.user_type=="1":
                 return HttpResponseRedirect('/admin_home')
             elif user.user_type=="2":
@@ -31,21 +31,21 @@ def doLogin(request):
             else:
                 return HttpResponseRedirect(reverse("student_home"))
         else:
-            messages.error(request,"Invalid Login Details")
+            messages.error(req,"Invalid Login Details")
             return HttpResponseRedirect("/")
 
 
-def GetUserDetails(request):
-    if request.user!=None:
-        return HttpResponse("User : "+request.user.email+" usertype : "+str(request.user.user_type))
+def GetUserDetails(req):
+    if req.user!=None:
+        return HttpResponse("User : "+req.user.email+" usertype : "+str(req.user.user_type))
     else:
         return HttpResponse("Please Login First")
 
-def logout_user(request):
-    logout(request)
+def logout_user(req):
+    logout(req)
     return HttpResponseRedirect("/")
 
-def showFirebaseJS(request):
+def showFirebaseJS(req):
     data='importScripts("https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js");' \
          'importScripts("https://www.gstatic.com/firebasejs/7.14.6/firebase-messaging.js"); ' \
          'var firebaseConfig = {' \
