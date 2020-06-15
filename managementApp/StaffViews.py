@@ -87,7 +87,6 @@ def save_attendance_data(request):
     subject_model=Subjects.objects.get(id=subject_id)
     session_model=SessionYearModel.object.get(id=session_year_id)
     json_sstudent=json.loads(student_ids)
-    #print(data[0]['id'])
 
 
     try:
