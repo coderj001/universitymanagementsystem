@@ -20,7 +20,7 @@ View Attendance
                     <label>Subject </label>
                     <select class="form-control" name="subject" id="subject">
                         {% for subject in subjects %}
-                          <option value="{{ subject.id }}">{{ subject.subject_name }}</option>
+                          <option value="{{ subject.id }}">{{ subject.subject_name }} (Under {{ subject.staff_id.first_name }} {{ subject.staff_id.last_name }})</option>
                         {% endfor %}
                     </select>
                   </div>
@@ -28,7 +28,7 @@ View Attendance
                     <label>Session Year </label>
                     <select class="form-control" name="session_year_id" id="session_year_id">
                         {% for session_year in session_year_id %}
-                          <option value="{{ session_year.id }}">{{ session_year.session_start_year }} TO {{ session_year.session_end_year }}</option>
+                          <option value="{{ session_year.id }}">{{ session_year.session_start_year }} TO {{ session_year.session_end_year }}, {{ session_year.session_name }}</option>
                         {% endfor %}
                     </select>
                   </div>
@@ -90,6 +90,7 @@ View Attendance
                         for(key in json_data)
                         {
                             html_data+="<option value="+json_data[key]["id"]+">"+json_data[key]["attendance_date"]+"</option>";
+
                         }
                         $("#error_attendance").html("");
                         $("#error_attendance").hide();

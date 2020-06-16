@@ -32,7 +32,7 @@ class AddStudentForm(forms.Form):
         sessions = SessionYearModel.object.all()
 
         for ses in sessions:
-            small_ses = (ses.id, str(ses.session_start_year)+"   TO  "+str(ses.session_end_year))
+            small_ses = (ses.id, str(ses.session_start_year)+"   TO  "+str(ses.session_end_year)+", "+ses.session_name)
             session_list.append(small_ses)
     except:
         session_list=[]
@@ -69,7 +69,7 @@ class EditStudentForm(forms.Form):
         sessions = SessionYearModel.object.all()
 
         for ses in sessions:
-            small_ses = (ses.id, str(ses.session_start_year)+"   TO  "+str(ses.session_end_year))
+            small_ses = (ses.id, str(ses.session_start_year)+"   TO  "+str(ses.session_end_year)+", "+ses.session_name)
             session_list.append(small_ses)
     except:
         pass

@@ -357,11 +357,12 @@ def add_session_save(request):
     if request.method!="POST":
         return HttpResponseRedirect(reverse("manage_session"))
     else:
+        session_name=request.POST.get("session_name")
         session_start_year=request.POST.get("session_start")
         session_end_year=request.POST.get("session_end")
 
         try:
-            sessionyear=SessionYearModel(session_start_year=session_start_year,session_end_year=session_end_year)
+            sessionyear=SessionYearModel(session_name=session_name,session_start_year=session_start_year,session_end_year=session_end_year)
             sessionyear.save()
             messages.success(request, "Successfully Added Session")
             return HttpResponseRedirect(reverse("manage_session"))

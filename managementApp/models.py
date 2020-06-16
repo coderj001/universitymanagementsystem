@@ -6,6 +6,11 @@ from django.dispatch import receiver
 # Create your models here.
 class SessionYearModel(models.Model):
     id=models.AutoField(primary_key=True)
+    session_name=models.CharField(choices=(
+        ('First Year','First Year'),
+        ('Second Year','Second Year'),
+        ('Third Year','Third Year'),
+        ('Fourth Year','Fourth Year')),max_length=20)
     session_start_year=models.DateField()
     session_end_year=models.DateField()
     object=models.Manager()
