@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
 
-
+'''
+Setting-Up Custom Authentication To Auth with email and password
+'''
 class EmailBackEnd(ModelBackend):
     def authenticate(self,username=None, password=None, **kwargs):
         UserModel=get_user_model()

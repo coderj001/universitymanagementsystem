@@ -4,6 +4,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 # Create your models here.
+'''
+Each Class Is a Tables in the DateBase and varibles are rows with field coloumn.
+Tables are linked with ForeignKey id.
+In django database query are handled by Django ORM api.
+'''
 class SessionYearModel(models.Model):
     id=models.AutoField(primary_key=True)
     session_name=models.CharField(choices=(
@@ -15,6 +20,7 @@ class SessionYearModel(models.Model):
     session_end_year=models.DateField()
     object=models.Manager()
 
+# CustonUser take Base User and customized the user.
 class CustomUser(AbstractUser):
     user_type_data=((1,"HOD"),(2,"Staff"),(3,"Student"))
     user_type=models.CharField(default=1,choices=user_type_data,max_length=10)
@@ -150,6 +156,7 @@ class StudentResult(models.Model):
     updated_at=models.DateField(auto_now_add=True)
     objects=models.Manager()
 
+# Function is for creating user profile datebase
 @receiver(post_save,sender=CustomUser)
 def create_user_profile(sender,instance,created,**kwargs):
     if created:
@@ -160,6 +167,7 @@ def create_user_profile(sender,instance,created,**kwargs):
         if instance.user_type==3:
             Students.objects.create(admin=instance,course_id=Courses.objects.get(id=1),session_year_id=SessionYearModel.object.get(id=1),address="",profile_pic="",gender="")
 
+# Function is for save or update user profile datebase
 @receiver(post_save,sender=CustomUser)
 def save_user_profile(sender,instance,**kwargs):
     if instance.user_type==1:

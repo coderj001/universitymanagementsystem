@@ -1,6 +1,9 @@
+# importing python models
 import json
 import datetime
 import requests
+
+# calling django inbuit modules
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
@@ -9,7 +12,9 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
+# importing forms from managementApp
 from managementApp.forms import AddStudentForm, EditStudentForm
+#
 from managementApp.models import CustomUser, Staffs, Courses, Subjects, Students, SessionYearModel, \
     FeedBackStudent, FeedBackStaffs, LeaveReportStudent, LeaveReportStaff, Attendance, AttendanceReport, \
     NotificationStudent, NotificationStaffs

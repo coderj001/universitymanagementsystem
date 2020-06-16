@@ -1,13 +1,19 @@
+# calling django inbuit modules
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 
+# calling views from managementApp
 from managementApp import views, HodViews, StaffViews, StudentViews
 from managementApp.EditResultVIewClass import EditResultViewClass
+# calling settings to change default
 from UniversityManagementSystem import settings
 
+'''
+urlpatterns carry route of the views
+'''
 urlpatterns = [
     path('demo',views.showDemoPage),
     path('admin/', admin.site.urls),
@@ -84,7 +90,7 @@ urlpatterns = [
     path('edit_student_result',EditResultViewClass.as_view(), name="edit_student_result"),
     path('fetch_result_student',StaffViews.fetch_result_student, name="fetch_result_student"),
 
-
+                    # Student URL Path
     path('student_home', StudentViews.student_home, name="student_home"),
     path('student_view_attendance', StudentViews.student_view_attendance, name="student_view_attendance"),
     path('student_view_attendance_post', StudentViews.student_view_attendance_post, name="student_view_attendance_post"),
@@ -97,4 +103,8 @@ urlpatterns = [
     path('student_fcmtoken_save', StudentViews.student_fcmtoken_save, name="student_fcmtoken_save"),
     # path('firebase-messaging-sw.js',views.showFirebaseJS,name="show_firebase_js"),
     path('student_all_notification',StudentViews.studentAllNotification,name="student_all_notification"),
-]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)+static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+]
+# Adding MEDIA Route
+urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+# Adding STATIC FILES Route
+urlpatterns+=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
