@@ -1,5 +1,5 @@
 import json
-
+import datetime
 import requests
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -459,6 +459,30 @@ def admin_view_attendance(request):
     subjects=Subjects.objects.all()
     session_year_id=SessionYearModel.object.all()
     return render(request,"hod_template/admin_view_attendance.html",{"subjects":subjects,"session_year_id":session_year_id})
+
+# Marker
+def admin_view_attendance_list(request):
+    if request.method == 'GET':
+        subjects=Subjects.objects.all()
+        session_year_id=SessionYearModel.object.all()
+        return render(request,"hod_template/admin_view_attendance_list.html",{"subjects":subjects,"session_year_id":session_year_id})
+    if request.method == 'POST':
+        subject_id=request.POST.get("subject")
+        session_year_id=request.POST.get("session_year_id")
+        start_date=request.POST.get("start_date")
+        end_date=request.POST.get("end_date")
+
+        start_data_parse=datetime.datetime.strptime(start_date,"%Y-%m-%d").date()
+        end_data_parse=datetime.datetime.strptime(end_date,"%Y-%m-%d").date()
+
+        subject_obj=Subjects.objects.get(id=subject_id)
+        students_obj=Students.objects.filter(course_id=subject_obj.course_id,session_year_id=SessionYearModel.object.get(id=session_year_id))
+        attandance_list=[]
+        for student_obj in students_obj:
+            attendance=Attendance.objects.filter(attendance_date__range=(start_data_parse,end_data_parse),subject_id=subject_obj)
+            attendance_reports=AttendanceReport.objects.filter(attendance_id__in=attendance,student_id=student_obj)
+            attandance_list.append([student_obj.admin.id,student_obj.admin.username,student_obj.admin.first_name,student_obj.admin.last_name,attendance_reports.filter(status=True).count(),attendance_reports.filter(status=False).count()])
+        return render(request,"hod_template/admin_view_attendance_list_data.html",{'attandance_list':attandance_list})
 
 @csrf_exempt
 def admin_get_attendance_dates(request):
