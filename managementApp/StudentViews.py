@@ -8,7 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 from managementApp.models import Students, Courses, Subjects, CustomUser, Attendance, AttendanceReport, \
     LeaveReportStudent, FeedBackStudent, NotificationStudent
 
-
 def student_home(req):
     student_obj=Students.objects.get(admin=req.user.id)
     attendance_total=AttendanceReport.objects.filter(student_id=student_obj).count()
