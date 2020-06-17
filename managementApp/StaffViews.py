@@ -1,5 +1,5 @@
 import json
-
+import datetime
 from django.contrib import messages
 from django.core import serializers
 from django.forms import model_to_dict
@@ -105,6 +105,33 @@ def staff_update_attendance(request):
     subjects=Subjects.objects.filter(staff_id=request.user.id)
     session_year_id=SessionYearModel.object.all()
     return render(request,"staff_template/staff_update_attendance.html",{"subjects":subjects,"session_year_id":session_year_id})
+
+def staff_view_attendance_list(request):
+    if request.method == 'GET':
+        subjects=Subjects.objects.filter(staff_id=request.user.id)
+        session_year_id=SessionYearModel.object.all()
+        return render(request,"staff_template/staff_view_attendance_list.html",{"subjects":subjects,"session_year_id":session_year_id})
+    if request.method == 'POST':
+        subject_id=request.POST.get("subject")
+        session_year_id=request.POST.get("session_year_id")
+        start_date=request.POST.get("start_date")
+        end_date=request.POST.get("end_date")
+
+        if start_date == '' or end_date == '':
+            subjects=Subjects.objects.filter(staff_id=request.user.id)
+            session_year_id=SessionYearModel.object.all()
+            messages.error(request, "Please Select Date Properly")
+            return render(request,"staff_template/staff_view_attendance_list.html",{"subjects":subjects,"session_year_id":session_year_id,"messages":messages})
+        start_data_parse=datetime.datetime.strptime(start_date,"%Y-%m-%d").date()
+        end_data_parse=datetime.datetime.strptime(end_date,"%Y-%m-%d").date()
+        subject_obj=Subjects.objects.get(id=subject_id)
+        students_obj=Students.objects.filter(course_id=subject_obj.course_id,session_year_id=SessionYearModel.object.get(id=session_year_id))
+        attandance_list=[]
+        for student_obj in students_obj:
+            attendance=Attendance.objects.filter(attendance_date__range=(start_data_parse,end_data_parse),subject_id=subject_obj)
+            attendance_reports=AttendanceReport.objects.filter(attendance_id__in=attendance,student_id=student_obj)
+            attandance_list.append([student_obj.admin.id,student_obj.admin.username,student_obj.admin.first_name,student_obj.admin.last_name,attendance_reports.filter(status=True).count(),attendance_reports.filter(status=False).count()])
+        return render(request,"staff_template/staff_view_attendance_list_data.html",{'attandance_list':attandance_list})
 
 @csrf_exempt
 def get_attendance_dates(request):
