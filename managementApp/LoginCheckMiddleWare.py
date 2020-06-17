@@ -2,6 +2,11 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.deprecation import MiddlewareMixin
 
+'''
+This is Class provide extra layer to the django default login system.
+This class check user catagory (Admin:1, Staff:2 & Student:3).
+And Redirect to specific View class
+'''
 
 class LoginCheckMiddleWare(MiddlewareMixin):
 

@@ -57,11 +57,13 @@ def staff_home(request):
 
     return render(request,"staff_template/staff_home_template.html",{"students_count":students_count,"attendance_count":attendance_count,"leave_count":leave_count,"subject_count":subject_count,"subject_list":subject_list,"attendance_list":attendance_list,"student_list":student_list,"present_list":student_list_attendance_present,"absent_list":student_list_attendance_absent})
 
+# Provide view of attendance
 def staff_take_attendance(request):
     subjects=Subjects.objects.filter(staff_id=request.user.id)
     session_years=SessionYearModel.object.all()
     return render(request,"staff_template/staff_take_attendance.html",{"subjects":subjects,"session_years":session_years})
 
+# Provide json responce to the ajax call (for student list)
 @csrf_exempt
 def get_students(request):
     subject_id=request.POST.get("subject")
