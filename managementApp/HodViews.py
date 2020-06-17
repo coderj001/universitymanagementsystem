@@ -19,8 +19,9 @@ from managementApp.models import CustomUser, Staffs, Courses, Subjects, Students
     FeedBackStudent, FeedBackStaffs, LeaveReportStudent, LeaveReportStaff, Attendance, AttendanceReport, \
     NotificationStudent, NotificationStaffs
 
-
+# This function is setting the view port
 def admin_home(request):
+    # Fetching Data from Database
     student_count1=Students.objects.all().count()
     staff_count=Staffs.objects.all().count()
     subject_count=Subjects.objects.all().count()
@@ -30,6 +31,7 @@ def admin_home(request):
     course_name_list=[]
     subject_count_list=[]
     student_count_list_in_course=[]
+    # Makeing List for processing graphs in home page
     for course in course_all:
         subjects=Subjects.objects.filter(course_id=course.id).count()
         students=Students.objects.filter(course_id=course.id).count()
@@ -70,12 +72,14 @@ def admin_home(request):
         attendance_absent_list_student.append(leaves+absent)
         student_name_list.append(student.admin.username)
 
-
+        # Passing all the data into render
     return render(request,"hod_template/home_content.html",{"student_count":student_count1,"staff_count":staff_count,"subject_count":subject_count,"course_count":course_count,"course_name_list":course_name_list,"subject_count_list":subject_count_list,"student_count_list_in_course":student_count_list_in_course,"student_count_list_in_subject":student_count_list_in_subject,"subject_list":subject_list,"staff_name_list":staff_name_list,"attendance_present_list_staff":attendance_present_list_staff,"attendance_absent_list_staff":attendance_absent_list_staff,"student_name_list":student_name_list,"attendance_present_list_student":attendance_present_list_student,"attendance_absent_list_student":attendance_absent_list_student})
 
+# For Rendering add staff page
 def add_staff(request):
     return render(request,"hod_template/add_staff_template.html")
 
+# Saveing staff to database
 def add_staff_save(request):
     if request.method!="POST":
         return HttpResponse("Method Not Allowed")
@@ -90,15 +94,19 @@ def add_staff_save(request):
             user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
             user.staffs.address=address
             user.save()
+            # Messages for success
             messages.success(request,"Successfully Added Staff")
             return HttpResponseRedirect(reverse("add_staff"))
         except:
+            # Error
             messages.error(request,"Failed to Add Staff")
             return HttpResponseRedirect(reverse("add_staff"))
 
+# For Rendering add course view page
 def add_course(request):
     return render(request,"hod_template/add_course_template.html")
 
+# Saving to database
 def add_course_save(request):
     if request.method!="POST":
         return HttpResponse("Method Not Allowed")
@@ -113,16 +121,20 @@ def add_course_save(request):
             messages.error(request,"Failed To Add Course")
             return HttpResponseRedirect(reverse("add_course"))
 
+# Page for adding student
 def add_student(request):
+    # django in-built form manager to provider form to the page
     form=AddStudentForm()
     return render(request,"hod_template/add_student_template.html",{"form":form})
 
+# Getting the submitted Form data form add_student page and validation and adding to the database
 def add_student_save(request):
     if request.method!="POST":
         return HttpResponse("Method Not Allowed")
     else:
         form=AddStudentForm(request.POST,request.FILES)
         if form.is_valid():
+            # Takeing data from the form
             first_name=form.cleaned_data["first_name"]
             last_name=form.cleaned_data["last_name"]
             username=form.cleaned_data["username"]
@@ -139,6 +151,7 @@ def add_student_save(request):
             profile_pic_url=fs.url(filename)
 
             try:
+                # Creating user instant from Django User Model
                 user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=3)
                 user.students.address=address
                 course_obj=Courses.objects.get(id=course_id)
@@ -147,6 +160,7 @@ def add_student_save(request):
                 user.students.session_year_id=session_year
                 user.students.gender=sex
                 user.students.profile_pic=profile_pic_url
+                # Saving the instant to database
                 user.save()
                 messages.success(request,"Successfully Added Student")
                 return HttpResponseRedirect(reverse("add_student"))
@@ -157,12 +171,13 @@ def add_student_save(request):
             form=AddStudentForm(request.POST)
             return render(request, "hod_template/add_student_template.html", {"form": form})
 
-
+# Render ing add subject page
 def add_subject(request):
     courses=Courses.objects.all()
     staffs=CustomUser.objects.filter(user_type=2)
     return render(request,"hod_template/add_subject_template.html",{"staffs":staffs,"courses":courses})
 
+# Saving the data into database
 def add_subject_save(request):
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -182,27 +197,32 @@ def add_subject_save(request):
             messages.error(request,"Failed to Add Subject")
             return HttpResponseRedirect(reverse("add_subject"))
 
-
+# Rendering page with list of staff from Database
 def manage_staff(request):
     staffs=Staffs.objects.all()
     return render(request,"hod_template/manage_staff_template.html",{"staffs":staffs})
 
+# Rendering page with list of student from Database
 def manage_student(request):
     students=Students.objects.all()
     return render(request,"hod_template/manage_student_template.html",{"students":students})
 
+# Rendering page with list of couser from Database
 def manage_course(request):
     courses=Courses.objects.all()
     return render(request,"hod_template/manage_course_template.html",{"courses":courses})
 
+# Rendering page with list of subject from Database
 def manage_subject(request):
     subjects=Subjects.objects.all()
     return render(request,"hod_template/manage_subject_template.html",{"subjects":subjects})
 
+# Rendering the page page of edit staff
 def edit_staff(request,staff_id):
     staff=Staffs.objects.get(admin=staff_id)
     return render(request,"hod_template/edit_staff_template.html",{"staff":staff,"id":staff_id})
 
+# Saving the edit staff to the database via id(Auto unique key)
 def edit_staff_save(request):
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -231,6 +251,7 @@ def edit_staff_save(request):
             messages.error(request,"Failed to Edit Staff")
             return HttpResponseRedirect(reverse("edit_staff",kwargs={"staff_id":staff_id}))
 
+# Initial data from database to the form.
 def edit_student(request,student_id):
     request.session['student_id']=student_id
     student=Students.objects.get(admin=student_id)
@@ -245,6 +266,7 @@ def edit_student(request,student_id):
     form.fields['session_year_id'].initial=student.session_year_id.id
     return render(request,"hod_template/edit_student_template.html",{"form":form,"id":student_id,"username":student.admin.username})
 
+# Saveing edited student data
 def edit_student_save(request):
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -302,12 +324,14 @@ def edit_student_save(request):
             student=Students.objects.get(admin=student_id)
             return render(request,"hod_template/edit_student_template.html",{"form":form,"id":student_id,"username":student.admin.username})
 
+# Rendering edit subject page
 def edit_subject(request,subject_id):
     subject=Subjects.objects.get(id=subject_id)
     courses=Courses.objects.all()
     staffs=CustomUser.objects.filter(user_type=2)
     return render(request,"hod_template/edit_subject_template.html",{"subject":subject,"staffs":staffs,"courses":courses,"id":subject_id})
 
+# saving the edited data
 def edit_subject_save(request):
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -332,11 +356,12 @@ def edit_subject_save(request):
             messages.error(request,"Failed to Edit Subject")
             return HttpResponseRedirect(reverse("edit_subject",kwargs={"subject_id":subject_id}))
 
-
+# Rendering edit course page
 def edit_course(request,course_id):
     course=Courses.objects.get(id=course_id)
     return render(request,"hod_template/edit_course_template.html",{"course":course,"id":course_id})
 
+# Saving the edited data
 def edit_course_save(request):
     if request.method!="POST":
         return HttpResponse("<h2>Method Not Allowed</h2>")
@@ -354,10 +379,11 @@ def edit_course_save(request):
             messages.error(request,"Failed to Edit Course")
             return HttpResponseRedirect(reverse("edit_course",kwargs={"course_id":course_id}))
 
-
+# Rendering manage session page
 def manage_session(request):
     return render(request,"hod_template/manage_session_template.html")
 
+# Saving the post data
 def add_session_save(request):
     if request.method!="POST":
         return HttpResponseRedirect(reverse("manage_session"))
@@ -375,7 +401,9 @@ def add_session_save(request):
             messages.error(request, "Failed to Add Session")
             return HttpResponseRedirect(reverse("manage_session"))
 
-@csrf_exempt
+# For provide api to the template
+# To check email exit in user table
+@csrf_exempt # this decorator allowed data to pass via ajax without csrf token auth
 def check_email_exist(request):
     email=request.POST.get("email")
     user_obj=CustomUser.objects.filter(email=email).exists()
@@ -384,6 +412,7 @@ def check_email_exist(request):
     else:
         return HttpResponse(False)
 
+# To check username exit in user table
 @csrf_exempt
 def check_username_exist(request):
     username=request.POST.get("username")
@@ -393,14 +422,17 @@ def check_username_exist(request):
     else:
         return HttpResponse(False)
 
+# Rendering staff feedback message page
 def staff_feedback_message(request):
     feedbacks=FeedBackStaffs.objects.all()
     return render(request,"hod_template/staff_feedback_template.html",{"feedbacks":feedbacks})
 
+# Rendering student feedback message page
 def student_feedback_message(request):
     feedbacks=FeedBackStudent.objects.all()
     return render(request,"hod_template/student_feedback_template.html",{"feedbacks":feedbacks})
 
+# To ckeck for notifiaction
 @csrf_exempt
 def student_feedback_message_replied(request):
     feedback_id=request.POST.get("id")
@@ -427,45 +459,51 @@ def staff_feedback_message_replied(request):
     except:
         return HttpResponse("False")
 
+# To render staff leave view page
 def staff_leave_view(request):
     leaves=LeaveReportStaff.objects.all()
     return render(request,"hod_template/staff_leave_view.html",{"leaves":leaves})
 
+# To render student leave view page
 def student_leave_view(request):
     leaves=LeaveReportStudent.objects.all()
     return render(request,"hod_template/student_leave_view.html",{"leaves":leaves})
 
+# To excuted button student approve leave view page
 def student_approve_leave(request,leave_id):
     leave=LeaveReportStudent.objects.get(id=leave_id)
     leave.leave_status=1
     leave.save()
     return HttpResponseRedirect(reverse("student_leave_view"))
 
+# To excuted button student disapprove leave view page
 def student_disapprove_leave(request,leave_id):
     leave=LeaveReportStudent.objects.get(id=leave_id)
     leave.leave_status=2
     leave.save()
     return HttpResponseRedirect(reverse("student_leave_view"))
 
-
+# To excuted button stuff approve leave view page
 def staff_approve_leave(request,leave_id):
     leave=LeaveReportStaff.objects.get(id=leave_id)
     leave.leave_status=1
     leave.save()
     return HttpResponseRedirect(reverse("staff_leave_view"))
 
+# To excuted button stuff disapprove leave view page
 def staff_disapprove_leave(request,leave_id):
     leave=LeaveReportStaff.objects.get(id=leave_id)
     leave.leave_status=2
     leave.save()
     return HttpResponseRedirect(reverse("staff_leave_view"))
 
+# To render admin attendance view
 def admin_view_attendance(request):
     subjects=Subjects.objects.all()
     session_year_id=SessionYearModel.object.all()
     return render(request,"hod_template/admin_view_attendance.html",{"subjects":subjects,"session_year_id":session_year_id})
 
-# Marker
+# To check attendance for the range
 def admin_view_attendance_list(request):
     if request.method == 'GET':
         subjects=Subjects.objects.all()
@@ -489,6 +527,8 @@ def admin_view_attendance_list(request):
             attandance_list.append([student_obj.admin.id,student_obj.admin.username,student_obj.admin.first_name,student_obj.admin.last_name,attendance_reports.filter(status=True).count(),attendance_reports.filter(status=False).count()])
         return render(request,"hod_template/admin_view_attendance_list_data.html",{'attandance_list':attandance_list})
 
+# To provide json responce to ajax calls
+# For numbers of date present in the Database
 @csrf_exempt
 def admin_get_attendance_dates(request):
     subject=request.POST.get("subject")
@@ -500,10 +540,10 @@ def admin_get_attendance_dates(request):
     for attendance_single in attendance:
         data={"id":attendance_single.id,"attendance_date":str(attendance_single.attendance_date),"session_year_id":attendance_single.session_year_id.id}
         attendance_obj.append(data)
-
     return JsonResponse(json.dumps(attendance_obj),safe=False)
 
-
+# To provide json responce to ajax calls
+# For numbers of date present in the Database for takeing or updating attendance
 @csrf_exempt
 def admin_get_attendance_student(request):
     attendance_date=request.POST.get("attendance_date")
@@ -517,10 +557,12 @@ def admin_get_attendance_student(request):
         list_data.append(data_small)
     return JsonResponse(json.dumps(list_data),content_type="application/json",safe=False)
 
+# Provide data for admin profile
 def admin_profile(request):
     user=CustomUser.objects.get(id=request.user.id)
     return render(request,"hod_template/admin_profile.html",{"user":user})
 
+# Saving edited data
 def admin_profile_save(request):
     if request.method!="POST":
         return HttpResponseRedirect(reverse("admin_profile"))
@@ -532,8 +574,6 @@ def admin_profile_save(request):
             customuser=CustomUser.objects.get(id=request.user.id)
             customuser.first_name=first_name
             customuser.last_name=last_name
-            # if password!=None and password!="":
-            #     customuser.set_password(password)
             customuser.save()
             messages.success(request, "Successfully Updated Profile")
             return HttpResponseRedirect(reverse("admin_profile"))
@@ -541,14 +581,18 @@ def admin_profile_save(request):
             messages.error(request, "Failed to Update Profile")
             return HttpResponseRedirect(reverse("admin_profile"))
 
+# Provide the list of student in the template
 def admin_send_notification_student(request):
     students=Students.objects.all()
     return render(request,"hod_template/student_notification.html",{"students":students})
 
+# Provide the list of staff in the template
 def admin_send_notification_staff(request):
     staffs=Staffs.objects.all()
     return render(request,"hod_template/staff_notification.html",{"staffs":staffs})
 
+# Provide ajax response
+#? TODO(Incomplete): NEED TO CONFG
 @csrf_exempt
 def send_student_notification(request):
     id=request.POST.get("id")
@@ -558,7 +602,7 @@ def send_student_notification(request):
     url="https://fcm.googleapis.com/fcm/send"
     body={
         "notification":{
-            "title":"Student Management System",
+            "title":"University Management System",
             "body":message,
             "click_action": "https://studentmanagementsystem22.herokuapp.com/student_all_notification",
             "icon": "http://studentmanagementsystem22.herokuapp.com/static/dist/img/user2-160x160.jpg"
@@ -572,6 +616,7 @@ def send_student_notification(request):
     print(data.text)
     return HttpResponse("True")
 
+#? TODO(Incomplete): NEED TO CONFG
 @csrf_exempt
 def send_staff_notification(request):
     id=request.POST.get("id")
@@ -581,7 +626,7 @@ def send_staff_notification(request):
     url="https://fcm.googleapis.com/fcm/send"
     body={
         "notification":{
-            "title":"Student Management System",
+            "title":"University Management System",
             "body":message,
             "click_action":"https://studentmanagementsystem22.herokuapp.com/staff_all_notification",
             "icon":"http://studentmanagementsystem22.herokuapp.com/static/dist/img/user2-160x160.jpg"
