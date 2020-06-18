@@ -8,7 +8,9 @@ from django.views.decorators.csrf import csrf_exempt
 from managementApp.models import Students, Courses, Subjects, CustomUser, Attendance, AttendanceReport, \
     LeaveReportStudent, FeedBackStudent, NotificationStudent
 
+# For rendering student home page
 def student_home(req):
+    #Fetching data
     student_obj=Students.objects.get(admin=req.user.id)
     attendance_total=AttendanceReport.objects.filter(student_id=student_obj).count()
     attendance_present=AttendanceReport.objects.filter(student_id=student_obj,status=True).count()
@@ -30,12 +32,14 @@ def student_home(req):
 
     return render(req,"student_template/student_home_template.html",{"total_attendance":attendance_total,"attendance_absent":attendance_absent,"attendance_present":attendance_present,"subjects":subjects,"data_name":subject_name,"data1":data_present,"data2":data_absent})
 
+# Rendering student view attendance
 def student_view_attendance(req):
     student=Students.objects.get(admin=req.user.id)
     course=student.course_id
     subjects=Subjects.objects.filter(course_id=course)
     return render(req,"student_template/student_view_attendance.html",{"subjects":subjects})
 
+# For Student attendance page
 def student_view_attendance_post(req):
     subject_id=req.POST.get("subject")
     start_date=req.POST.get("start_date")
@@ -51,11 +55,13 @@ def student_view_attendance_post(req):
     attendance_reports=AttendanceReport.objects.filter(attendance_id__in=attendance,student_id=stud_obj)
     return render(req,"student_template/student_attendance_data.html",{"attendance_reports":attendance_reports})
 
+# To render student apply leave page
 def student_apply_leave(req):
     staff_obj = Students.objects.get(admin=req.user.id)
     leave_data=LeaveReportStudent.objects.filter(student_id=staff_obj)
     return render(req,"student_template/student_apply_leave.html",{"leave_data":leave_data})
 
+# Saveing post data
 def student_apply_leave_save(req):
     if req.method!="POST":
         return HttpResponseRedirect(reverse("student_apply_leave"))
@@ -73,12 +79,13 @@ def student_apply_leave_save(req):
             messages.error(req, "Failed To Apply for Leave")
             return HttpResponseRedirect(reverse("student_apply_leave"))
 
-
+# To render student feedback page
 def student_feedback(req):
     staff_id=Students.objects.get(admin=req.user.id)
     feedback_data=FeedBackStudent.objects.filter(student_id=staff_id)
     return render(req,"student_template/student_feedback.html",{"feedback_data":feedback_data})
 
+# Saving student feedback
 def student_feedback_save(req):
     if req.method!="POST":
         return HttpResponseRedirect(reverse("student_feedback"))
@@ -95,11 +102,13 @@ def student_feedback_save(req):
             messages.error(req, "Failed To Send Feedback")
             return HttpResponseRedirect(reverse("student_feedback"))
 
+# To render student profile page
 def student_profile(req):
     user=CustomUser.objects.get(id=req.user.id)
     student=Students.objects.get(admin=user)
     return render(req,"student_template/student_profile.html",{"user":user,"student":student})
 
+# Saving edited student profile page
 def student_profile_save(req):
     if req.method!="POST":
         return HttpResponseRedirect(reverse("student_profile"))
@@ -125,6 +134,7 @@ def student_profile_save(req):
             messages.error(req, "Failed to Update Profile")
             return HttpResponseRedirect(reverse("student_profile"))
 
+# Slug unique token
 @csrf_exempt
 def student_fcmtoken_save(req):
     token=req.POST.get("token")
@@ -136,6 +146,7 @@ def student_fcmtoken_save(req):
     except:
         return HttpResponse("False")
 
+# Render Notification
 def studentAllNotification(req):
     student=Students.objects.get(admin=req.user.id)
     notifications=NotificationStudent.objects.filter(student_id=student.id)
