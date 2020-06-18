@@ -79,6 +79,7 @@ def get_students(request):
         list_data.append(data_small)
     return JsonResponse(json.dumps(list_data),content_type="application/json",safe=False)
 
+# saving ajax response tp databse
 @csrf_exempt
 def save_attendance_data(request):
     student_ids=request.POST.get("student_ids")
@@ -103,11 +104,13 @@ def save_attendance_data(request):
     except:
         return HttpResponse("ERR")
 
+# For Rendering Update Page
 def staff_update_attendance(request):
     subjects=Subjects.objects.filter(staff_id=request.user.id)
     session_year_id=SessionYearModel.object.all()
     return render(request,"staff_template/staff_update_attendance.html",{"subjects":subjects,"session_year_id":session_year_id})
 
+# To get Attendance list
 def staff_view_attendance_list(request):
     if request.method == 'GET':
         subjects=Subjects.objects.filter(staff_id=request.user.id)
@@ -135,6 +138,7 @@ def staff_view_attendance_list(request):
             attandance_list.append([student_obj.admin.id,student_obj.admin.username,student_obj.admin.first_name,student_obj.admin.last_name,attendance_reports.filter(status=True).count(),attendance_reports.filter(status=False).count()])
         return render(request,"staff_template/staff_view_attendance_list_data.html",{'attandance_list':attandance_list})
 
+# To get date via ajax call
 @csrf_exempt
 def get_attendance_dates(request):
     subject=request.POST.get("subject")
@@ -149,6 +153,7 @@ def get_attendance_dates(request):
 
     return JsonResponse(json.dumps(attendance_obj),safe=False)
 
+#
 @csrf_exempt
 def get_attendance_student(request):
     attendance_date=request.POST.get("attendance_date")
@@ -162,6 +167,7 @@ def get_attendance_student(request):
         list_data.append(data_small)
     return JsonResponse(json.dumps(list_data),content_type="application/json",safe=False)
 
+# To save attendance data
 @csrf_exempt
 def save_updateattendance_data(request):
     student_ids=request.POST.get("student_ids")
@@ -181,11 +187,13 @@ def save_updateattendance_data(request):
     except:
         return HttpResponse("ERR")
 
+# To render staff apply leave page
 def staff_apply_leave(request):
     staff_obj = Staffs.objects.get(admin=request.user.id)
     leave_data=LeaveReportStaff.objects.filter(staff_id=staff_obj)
     return render(request,"staff_template/staff_apply_leave.html",{"leave_data":leave_data})
 
+# To save leave data to database
 def staff_apply_leave_save(request):
     if request.method!="POST":
         return HttpResponseRedirect(reverse("staff_apply_leave"))
@@ -203,12 +211,13 @@ def staff_apply_leave_save(request):
             messages.error(request, "Failed To Apply for Leave")
             return HttpResponseRedirect(reverse("staff_apply_leave"))
 
-
+# Rander staff feedback page
 def staff_feedback(request):
     staff_id=Staffs.objects.get(admin=request.user.id)
     feedback_data=FeedBackStaffs.objects.filter(staff_id=staff_id)
     return render(request,"staff_template/staff_feedback.html",{"feedback_data":feedback_data})
 
+# Saveing data return staff feedback page
 def staff_feedback_save(request):
     if request.method!="POST":
         return HttpResponseRedirect(reverse("staff_feedback_save"))
@@ -225,11 +234,13 @@ def staff_feedback_save(request):
             messages.error(request, "Failed To Send Feedback")
             return HttpResponseRedirect(reverse("staff_feedback"))
 
+# Rendering staff profile page
 def staff_profile(request):
     user=CustomUser.objects.get(id=request.user.id)
     staff=Staffs.objects.get(admin=user)
     return render(request,"staff_template/staff_profile.html",{"user":user,"staff":staff})
 
+# Saveing edited date via id field
 def staff_profile_save(request):
     if request.method!="POST":
         return HttpResponseRedirect(reverse("staff_profile"))
@@ -255,6 +266,7 @@ def staff_profile_save(request):
             messages.error(request, "Failed to Update Profile")
             return HttpResponseRedirect(reverse("staff_profile"))
 
+# Slug unique token
 @csrf_exempt
 def staff_fcmtoken_save(request):
     token=request.POST.get("token")
@@ -266,6 +278,7 @@ def staff_fcmtoken_save(request):
     except:
         return HttpResponse("False")
 
+# Render notification page
 def staff_all_notification(request):
     staff=Staffs.objects.get(admin=request.user.id)
     notifications=NotificationStaffs.objects.filter(staff_id=staff.id)
