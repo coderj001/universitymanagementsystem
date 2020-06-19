@@ -3,8 +3,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+TEMP_DIR=os.path.join(BASE_DIR,'managementApp/templates')
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'so*rai_2(lk7t(yh%de+_kp_c%*r_b9wkga%gyo5tl9_8_r!xx'
+SECRET_KEY = '33(*!!u8a(e%kq_i#p(j8hj=w)ujw=0v#))=69i6+9+f-s9j6+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -49,7 +50,7 @@ ROOT_URLCONF = 'UniversityManagementSystem.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['managementApp/templates'],
+        'DIRS': [TEMP_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
