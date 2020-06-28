@@ -11,7 +11,7 @@ SECRET_KEY = '33(*!!u8a(e%kq_i#p(j8hj=w)ujw=0v#))=69i6+9+f-s9j6+'
 DEBUG = True
 
 #HEROKU LIVE PROJECT LINK
-#ALLOWED_HOSTS = ["studentmanagementsystem22.herokuapp.com"]
+# ALLOWED_HOSTS = ["UniversityManagementSystem.herokuapp.com"]
 ALLOWED_HOSTS = ["*"]
 
 MEDIA_URL="/media/"
@@ -34,7 +34,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     #===Enable Only Making Project Live on Heroku==
-     #'whitenoise.middleware.WhiteNoiseMiddleware',
+     # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

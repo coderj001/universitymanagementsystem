@@ -11,7 +11,7 @@ This project was done as the part of *MAKAUT* Hackathon topics. And as student w
 1. Django (_Backend_)
 2. Bootstrap UiKit Template (_FrontEnd_)
 3. Jquery (_For Ajax_)
-4. Paper.js (_For Graph_)
+4. Chart.js (_For Graph_)
 
 ### Features
 
