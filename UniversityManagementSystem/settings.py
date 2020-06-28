@@ -8,7 +8,7 @@ TEMP_DIR=os.path.join(BASE_DIR,'managementApp/templates')
 SECRET_KEY = '33(*!!u8a(e%kq_i#p(j8hj=w)ujw=0v#))=69i6+9+f-s9j6+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #HEROKU LIVE PROJECT LINK
 # ALLOWED_HOSTS = ["UniversityManagementSystem.herokuapp.com"]
