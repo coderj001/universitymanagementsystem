@@ -25,10 +25,11 @@ This project was done as the part of *MAKAUT* Hackathon topics. And as student w
 ### Installation
 
 1. Download it from git and open the folder
-2. Run command `pip install -r requirements.txt`
-3. Get inside the folder `UniversityManagementSystem` and type `python manage.py runserver`
-4. Incase of error run command python `manage.py makemigrations` and `python manage.py migrate`
-5. Create a admin user `python manage.py createsuperuser` provide details and login into the page.
+2. Get inside the folder `UniversityManagementSystem`
+3. Run command `pip install -r requirements.txt`
+4. Incase of error run command python `manage.py makemigrations managementApp` and `python manage.py migrate`
+5. Type `python manage.py runserver`
+6. Create a admin user `python manage.py createsuperuser` provide details and login into the page.
 
 #### How to use?
 

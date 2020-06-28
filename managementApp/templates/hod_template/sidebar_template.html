@@ -24,6 +24,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+               <!-- home -->
           <li class="nav-item">
             {% url 'admin_home' as admin_home %}
             <a href="{{ admin_home }}" class="nav-link {% if request.path == admin_home %} active {% endif %}">
@@ -33,17 +34,25 @@
               </p>
             </a>
           </li>
-
+          <!-- Stuff -->
           <li class="nav-item">
-            {% url 'add_staff' as add_staff %}
-            <a href="{{ add_staff }}" class="nav-link {% if request.path == add_staff %} active {% endif %}">
+            <a href="#stuffSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Add Staff
+               Staff
               </p>
             </a>
-          </li>
-           <li class="nav-item">
+                <ul class="collapse list-unstyled" id="stuffSubMenu">
+                    <li class="nav-item">
+                    {% url 'add_staff' as add_staff %}
+                    <a href="{{ add_staff }}" class="nav-link {% if request.path == add_staff %} active {% endif %}">
+                      <i class="nav-icon fas fa-th"></i>
+                      <p>
+                        Add Staff
+                      </p>
+                    </a>
+                  </li>
+                    <li class="nav-item">
               {% url 'manage_staff' as manage_staff %}
             {% url 'edit_staff' staff_id=id as edit_staff %}
             <a href="{% url 'manage_staff' %}" class="nav-link {% if request.path == manage_staff %} active {% endif %} {% if request.path == edit_staff %} active {% endif %}">
@@ -53,7 +62,18 @@
               </p>
             </a>
           </li>
+                </ul>
+          </li>
+          <!-- Student  -->
           <li class="nav-item">
+            <a href="#studentSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+               Student
+              </p>
+            </a>
+                <ul class="collapse list-unstyled" id="studentSubMenu">
+                    <li class="nav-item">
               {% url 'add_student' as add_student %}
             <a href="{% url 'add_student' %}" class="nav-link {% if request.path == add_student %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
@@ -62,7 +82,7 @@
               </p>
             </a>
           </li>
-          <li class="nav-item">
+                    <li class="nav-item">
               {% url 'manage_student' as manage_student %}
               {% url 'edit_student' student_id=id as edit_student %}
             <a href="{% url 'manage_student' %}" class="nav-link {% if request.path == manage_student %} active {% endif %} {% if request.path == edit_student %} active {% endif %}">
@@ -72,55 +92,77 @@
               </p>
             </a>
           </li>
+                </ul>
+          </li>
+          <!-- EduManagement -->
           <li class="nav-item">
-            {% url 'add_course' as add_course %}
-            <a href="{% url 'add_course' %}" class="nav-link {% if request.path == add_course %} active {% endif %}">
+            <a href="#EduManagementSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Add Course
+               Education Management
               </p>
             </a>
-          </li>
-          <li class="nav-item">
-            {% url 'manage_course' as manage_course %}
-              {% url 'edit_course' course_id=id as edit_course %}
-            <a href="{% url 'manage_course' %}" class="nav-link {% if request.path == manage_course %} active {% endif %} {% if request.path == edit_course %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Manage Course
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            {% url 'add_subject' as add_subject %}
-            <a href="{% url 'add_subject' %}" class="nav-link {% if request.path == add_subject %} active {% endif %}">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Add Subject
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            {% url 'manage_subject' as manage_subject %}
-            {% url 'edit_subject' subject_id=id as edit_subject %}
-            <a href="{% url 'manage_subject' %}" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %} ">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Manage Subject
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            {% url 'manage_session' as manage_session %}
-            <a href="{% url 'manage_session' %}" class="nav-link {% if request.path == manage_session %} active {% endif %} ">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Manage Session Year
-              </p>
-            </a>
-          </li>
+                <ul class="collapse list-unstyled" id="EduManagementSubMenu">
+                 <li class="nav-item">
+                            {% url 'add_course' as add_course %}
+                            <a href="{% url 'add_course' %}" class="nav-link {% if request.path == add_course %} active {% endif %}">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                Add Course
+                              </p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            {% url 'manage_course' as manage_course %}
+                              {% url 'edit_course' course_id=id as edit_course %}
+                            <a href="{% url 'manage_course' %}" class="nav-link {% if request.path == manage_course %} active {% endif %} {% if request.path == edit_course %} active {% endif %}">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                Manage Course
+                              </p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            {% url 'add_subject' as add_subject %}
+                            <a href="{% url 'add_subject' %}" class="nav-link {% if request.path == add_subject %} active {% endif %}">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                Add Subject
+                              </p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            {% url 'manage_subject' as manage_subject %}
+                            {% url 'edit_subject' subject_id=id as edit_subject %}
+                            <a href="{% url 'manage_subject' %}" class="nav-link {% if request.path == manage_subject %} active {% endif %} {% if request.path == edit_subject %} active {% endif %} ">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                Manage Subject
+                              </p>
+                            </a>
+                          </li>
+                          <li class="nav-item">
+                            {% url 'manage_session' as manage_session %}
+                            <a href="{% url 'manage_session' %}" class="nav-link {% if request.path == manage_session %} active {% endif %} ">
+                              <i class="nav-icon fas fa-th"></i>
+                              <p>
+                                Manage Session Year
+                              </p>
+                            </a>
+                          </li>
 
-           <li class="nav-item">
+                </ul>
+          </li>
+          <!-- Feedback -->
+            <li class="nav-item">
+            <a href="#feedbackSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+               Feedback
+              </p>
+            </a>
+                <ul class="collapse list-unstyled" id="feedbackSubMenu">
+                  <li class="nav-item">
              {% url 'student_feedback_message' as student_feedback_message %}
             <a href="{% url 'student_feedback_message' %}" class="nav-link {% if request.path == student_feedback_message %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
@@ -138,7 +180,18 @@
               </p>
             </a>
           </li>
-           <li class="nav-item">
+                </ul>
+          </li>
+          <!-- Leave -->
+          <li class="nav-item">
+            <a href="#leaveSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+               Leave
+              </p>
+            </a>
+                <ul class="collapse list-unstyled" id="leaveSubMenu">
+                  <li class="nav-item">
                {% url 'student_leave_view' as student_leave_view %}
             <a href="{% url 'student_leave_view' %}" class="nav-link {% if request.path == student_leave_view %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
@@ -156,7 +209,18 @@
               </p>
             </a>
           </li>
+                </ul>
+          </li>
+          <!-- Attendance -->
           <li class="nav-item">
+            <a href="#attendanceSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+               Attendance
+              </p>
+            </a>
+                <ul class="collapse list-unstyled" id="attendanceSubMenu">
+                  <li class="nav-item">
             {% url 'admin_view_attendance' as admin_view_attendance %}
              <a href="{% url 'admin_view_attendance' %}" class="nav-link {% if request.path == admin_view_attendance %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
@@ -174,7 +238,18 @@
               </p>
             </a>
           </li>
+                </ul>
+          </li>
+          <!-- Notification -->
           <li class="nav-item">
+            <a href="#notificationSubMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+               Notification
+              </p>
+            </a>
+                <ul class="collapse list-unstyled" id="notificationSubMenu">
+                  <li class="nav-item">
             {% url 'admin_send_notification_staff' as admin_send_notification_staff %}
              <a href="{% url 'admin_send_notification_staff' %}" class="nav-link {% if request.path == admin_send_notification_staff %} active {% endif %}">
               <i class="nav-icon fas fa-th"></i>
@@ -192,7 +267,9 @@
               </p>
             </a>
           </li>
-
+                </ul>
+          </li>
+          <!--  -->
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
