@@ -1,6 +1,6 @@
-# University Management System
+# [Education Management System](https://educationmanagementsystem.herokuapp.com/)
 
-*UNIVERSITY MANAGEMENT SYSTEM (UMS)*  is a flagship product of Easy Solution which covers all aspects of Universities, Colleges or Schools. EUMS covers every minute aspects of a universities work flow and integrates all processes with user friendly interface.
+*EDUCATION MANAGEMENT SYSTEM (EMS)*  is a flagship product of Easy Solution which covers all aspects of Universities, Colleges or Schools. EUMS covers every minute aspects of a universities work flow and integrates all processes with user friendly interface.
 
 ### Motivation
 
