@@ -161,9 +161,12 @@ class RegisterUser(models.Model):
 
     def get_abs_url(self):
         return reverse('add_staff_rg',kwargs={'id':self.id})
+    def get_abs_student_url(self):
+        return reverse('add_student_list_rg',kwargs={'id':self.id})
     def get_abs_url_del(self):
             return reverse('add_stuff_rg_delete',kwargs={'id':self.id})
 
+# add_student_list_rg
 # Function is for creating user profile datebase
 @receiver(post_save,sender=CustomUser)
 def create_user_profile(sender,instance,created,**kwargs):

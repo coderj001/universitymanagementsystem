@@ -132,8 +132,20 @@ def add_course_save(request):
 
 # Page for adding student
 def add_student(request):
+    rguser=RegisterUser.objects.filter(user_type='Student')
+    return render(request,"hod_template/add_student_list_template.html",{"rguser":rguser})
+
+
+def add_student_list_rg(request,id):
     # django in-built form manager to provider form to the page
     form=AddStudentForm()
+    rguser=RegisterUser.objects.get(id=id)
+    form.fields['email'].initial=rguser.email
+    form.fields['first_name'].initial=rguser.first_name
+    form.fields['last_name'].initial=rguser.last_name
+    form.fields['address'].initial=rguser.address
+    # import pdb; pdb.set_trace()
+    form.fields['password'].initial=rguser.password
     return render(request,"hod_template/add_student_template.html",{"form":form})
 
 # Getting the submitted Form data form add_student page and validation and adding to the database
@@ -170,7 +182,9 @@ def add_student_save(request):
                 user.students.gender=sex
                 user.students.profile_pic=profile_pic_url
                 # Saving the instant to database
+                rguser=RegisterUser.objects.get(email=email)
                 user.save()
+                rguser.delete()
                 messages.success(request,"Successfully Added Student")
                 return HttpResponseRedirect(reverse("add_student"))
             except:

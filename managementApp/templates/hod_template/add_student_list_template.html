@@ -1,0 +1,65 @@
+{% extends 'hod_template/base_template.html' %}
+{% block page_title %}
+Register Student
+{% endblock page_title %}
+{% block main_content %}
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+
+
+           <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Add Staff</h3>
+
+                <div class="card-tools">
+                  <div class="input-group input-group-sm" style="width: 150px;">
+                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Address</th>
+                      <th>Delete</th>
+                      <th>Save</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for rg in rguser %}
+                    <tr>
+                      <td>{{ rg.id }}</td>
+                      <td>{{ rg.first_name }}</td>
+                      <td>{{ rg.last_name }}</td>
+                      <td>{{ rg.email }}</td>
+                      <td>{{ rg.address }}</td>
+                      <td><a class="btn btn-danger" href="{{rg.get_abs_url_del}}">Delete</a></td>
+                      <td><a class="btn btn-success" href="{{ rg.get_abs_student_url }}">Save</a></td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- /.content -->
+{% endblock main_content %}
+
