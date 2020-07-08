@@ -6,10 +6,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib import messages
 
 from managementApp.EmailBackEnd import EmailBackEnd
 from UniversityManagementSystem import settings
 
+from managementApp.forms import RegisterUserForm
+from managementApp.models import RegisterUser
 # To Demo Page
 def showDemoPage(req):
     return render(req,"demo.html")
@@ -47,3 +50,27 @@ def GetUserDetails(req):
 def logout_user(req):
     logout(req)
     return HttpResponseRedirect("/")
+
+def registerPage(req):
+    if req.method!='POST':
+        form=RegisterUserForm()
+        return render(req,'registration/register_page.html',{'form':form})
+    else:
+        # import pdb; pdb.set_trace()
+        form=RegisterUserForm(req.POST)
+        if form.is_valid():
+            # Takeing data from the form
+            first_name=form.cleaned_data["first_name"]
+            last_name=form.cleaned_data["last_name"]
+            email=form.cleaned_data["email"]
+            password=form.cleaned_data["password"]
+            address=form.cleaned_data["address"]
+            user_type=form.cleaned_data["user_type"]
+            try:
+                rguser=RegisterUser.objects.create(password=password,email=email,last_name=last_name,first_name=first_name,user_type=user_type,address=address)
+                rguser.save()
+                messages.success(req,"Successfully! wait for admin response")
+                return HttpResponseRedirect('/')
+            except:
+                messages.error(req,"Failed! Username or Email is already present")
+                return HttpResponseRedirect('/')

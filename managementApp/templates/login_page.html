@@ -56,11 +56,18 @@
              <a href="{% url 'password_reset' %}">Reset Password</a>
           </div><!-- /.col -->
         </div>
+        <div class="col-12 text-center">
+             <a href="{% url 'registerpage' %}">Register</a>
+          </div><!-- /.col -->
+        </div>
         <div class="row">
           {% if messages %}
          <div class="col-12">
             {% for message in messages %}
             {% if message.tags == 'error' %}
+            <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
+            {% endif %}
+            {% if message.tags == 'success' %}
             <div class="alert alert-danger" style="margin-top:10px">{{ message }}</div>
             {% endif %}
             {% endfor %}

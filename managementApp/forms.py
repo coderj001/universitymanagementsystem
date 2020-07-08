@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ChoiceField
 
-from managementApp.models import Courses, SessionYearModel, Subjects, Students
+from managementApp.models import Courses, SessionYearModel, Subjects, Students, RegisterUser
 
 class ChoiceNoValidation(ChoiceField):
     def validate(self, value):
@@ -114,3 +114,14 @@ class EditResultForm(forms.Form):
     assignment_marks=forms.CharField(label="Assignment Marks",widget=forms.TextInput(attrs={"class":"form-control"}))
     exam_marks=forms.CharField(label="Exam Marks",widget=forms.TextInput(attrs={"class":"form-control"}))
 
+class RegisterUserForm(forms.Form):
+    email=forms.EmailField(label="Email",max_length=50,widget=forms.EmailInput(attrs={"class":"form-control","autocomplete":"off"}))
+    password=forms.CharField(label="Password",max_length=50,widget=forms.PasswordInput(attrs={"class":"form-control"}))
+    first_name=forms.CharField(label="First Name",max_length=50,widget=forms.TextInput(attrs={"class":"form-control"}))
+    last_name=forms.CharField(label="Last Name",max_length=50,widget=forms.TextInput(attrs={"class":"form-control"}))
+    address=forms.CharField(label="Address",max_length=50,widget=forms.TextInput(attrs={"class":"form-control"}))
+    user_type_choice=(
+            ("Stuff","Stuff"),
+            ("Student","Student"),
+        )
+    user_type=forms.ChoiceField(label="User Type",choices=user_type_choice,widget=forms.Select(attrs={"class":"form-control"}))

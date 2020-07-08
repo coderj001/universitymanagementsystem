@@ -17,7 +17,7 @@ from managementApp.forms import AddStudentForm, EditStudentForm
 #
 from managementApp.models import CustomUser, Staffs, Courses, Subjects, Students, SessionYearModel, \
     FeedBackStudent, FeedBackStaffs, LeaveReportStudent, LeaveReportStaff, Attendance, AttendanceReport, \
-    NotificationStudent, NotificationStaffs
+    NotificationStudent, NotificationStaffs,RegisterUser
 
 # This function is setting the view port
 def admin_home(request):
@@ -77,8 +77,15 @@ def admin_home(request):
 
 # For Rendering add staff page
 def add_staff(request):
-    return render(request,"hod_template/add_staff_template.html")
-
+    rguser=RegisterUser.objects.filter(user_type='Stuff')
+    return render(request,"hod_template/add_staff_list_template.html",{'rguser':rguser})
+def add_stuff_rg_save(request,id):
+    rguser=RegisterUser.objects.get(id=id)
+    return render(request,"hod_template/add_staff_template.html",{'rguser':rguser})
+def add_stuff_rg_delete(request,id):
+    rguser=RegisterUser.objects.get(id=id)
+    rguser.delete()
+    return HttpResponseRedirect(reverse("add_staff"))
 # Saveing staff to database
 def add_staff_save(request):
     if request.method!="POST":
@@ -93,7 +100,9 @@ def add_staff_save(request):
         try:
             user=CustomUser.objects.create_user(username=username,password=password,email=email,last_name=last_name,first_name=first_name,user_type=2)
             user.staffs.address=address
+            rguser=RegisterUser.objects.get(email=user.email)
             user.save()
+            rguser.delete()
             # Messages for success
             messages.success(request,"Successfully Added Staff")
             return HttpResponseRedirect(reverse("add_staff"))
@@ -639,5 +648,4 @@ def send_staff_notification(request):
     notification.save()
     print(data.text)
     return HttpResponse("True")
-
 

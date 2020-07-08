@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
+from django.shortcuts import reverse
 # Create your models here.
 '''
 Each Class Is a Tables in the DateBase and varibles are rows with field coloumn.
@@ -145,6 +145,24 @@ class NotificationStaffs(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
+
+class RegisterUser(models.Model):
+    id=models.AutoField(primary_key=True)
+    email=models.EmailField(max_length=255, blank=False)
+    password=models.CharField(max_length=255,blank=False)
+    first_name=models.CharField(max_length=255,blank=False)
+    last_name=models.CharField(max_length=255, blank=False)
+    address=models.CharField(max_length=255)
+    CHOICE_TYP_USER=(
+            ('Stuff','Stuff'),
+            ('Student','Studnet'),
+        )
+    user_type=models.CharField(max_length=7,choices=CHOICE_TYP_USER,default='Studnet')
+
+    def get_abs_url(self):
+        return reverse('add_staff_rg',kwargs={'id':self.id})
+    def get_abs_url_del(self):
+            return reverse('add_stuff_rg_delete',kwargs={'id':self.id})
 
 # Function is for creating user profile datebase
 @receiver(post_save,sender=CustomUser)
