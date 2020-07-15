@@ -165,7 +165,7 @@ def add_student_save(request):
             session_year_id=form.cleaned_data["session_year_id"]
             course_id=form.cleaned_data["course"]
             sex=form.cleaned_data["sex"]
-
+            # import pdb; pdb.set_trace()
             profile_pic=request.FILES['profile_pic']
             fs=FileSystemStorage()
             filename=fs.save(profile_pic.name,profile_pic)
