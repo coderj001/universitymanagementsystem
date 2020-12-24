@@ -13,6 +13,10 @@ This project was done as the part of *MAKAUT* Hackathon topics. And as student w
 3. Jquery (_For Ajax_)
 4. Chart.js (_For Graph_)
 
+### Database Models
+
+![DMS](model_graph.png)
+
 ### Features
 
 + Their are three category of user Admin, Staff & Student. Each have their own view set.
@@ -30,6 +34,15 @@ This project was done as the part of *MAKAUT* Hackathon topics. And as student w
 4. Incase of error run command python `manage.py makemigrations managementApp` and `python manage.py migrate`
 5. Type `python manage.py runserver`
 6. Create a admin user `python manage.py createsuperuser` provide details and login into the page.
+7. If web page is not loading properly then run command `python manage.py collectstatic` and then run `python manage.py runserver`
+
+### Preview
+
++ ![Image1](https://i.imgur.com/BXfgcsW.png)
+
++ ![Image2](https://i.imgur.com/MHpKaRU.png)
+
++ ![Image3](https://i.imgur.com/G8S0wt4.png)
 
 #### How to use?
 

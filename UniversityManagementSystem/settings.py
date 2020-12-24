@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'managementApp'
 ]
 
@@ -47,6 +48,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'UniversityManagementSystem.urls'
+
+GRAPH_MODELS = {
+  'all_applications': True,
+  'group_models': True,
+}
 
 TEMPLATES = [
     {
