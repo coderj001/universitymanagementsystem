@@ -53,3 +53,4 @@ If you are running locally go throught Installation and then vist 127.0.0.1:8000
 
 1. By useing rest api and fontend libary like react, vue, etc. Application become more compact and faster to use.
 2. By push application to online server and configured it to smtp email password reset can be provided.
+
