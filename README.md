@@ -1,6 +1,7 @@
 # [Education Management System](https://educationmanagementsystem.herokuapp.com/)
 
 *EDUCATION MANAGEMENT SYSTEM (EMS)*  is a flagship product of Easy Solution which covers all aspects of Universities, Colleges or Schools. EUMS covers every minute aspects of a universities work flow and integrates all processes with user friendly interface.
+Login with email: admin@gmail.com and password: admin
 
 ### Motivation
 
